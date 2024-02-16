@@ -3,9 +3,6 @@ package com.itcinfotech.itcinfotech.controller;
 import com.itcinfotech.itcinfotech.pojo.StudentAndCollegeDTO;
 import com.itcinfotech.itcinfotech.pojo.UserRequest;
 import com.itcinfotech.itcinfotech.repository.StudentDao;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,11 +24,6 @@ public class StudentController {
     @Autowired
     StudentDao studentDao;
     @PostMapping
-    @ApiOperation(value = "Get all Students", notes = "Get all Students with pagination and sorting")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Retrieved Successfully"),
-            @ApiResponse(code = 404, message = "Not found - The Students are not found")
-    })
     public ResponseEntity<List<StudentAndCollegeDTO>> getStudents(@RequestBody UserRequest userRequest)
     {
         List<Sort.Order> orders = new ArrayList<>();

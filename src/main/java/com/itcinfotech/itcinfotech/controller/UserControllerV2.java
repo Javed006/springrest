@@ -1,11 +1,7 @@
 package com.itcinfotech.itcinfotech.controller;
-import com.itcinfotech.itcinfotech.pojo.User;
 import com.itcinfotech.itcinfotech.pojo.UserRequest;
 import com.itcinfotech.itcinfotech.pojo.UserV2;
 import com.itcinfotech.itcinfotech.service.UserServiceV2;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +17,6 @@ public class UserControllerV2 {
     @Autowired
     UserServiceV2 userServiceV2;
 
-    @ApiOperation(value = "Create User with RequestBody User", notes = "Create User with RequestBody US")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Saved Successfully"),
-            @ApiResponse(code = 404, message = "Not saved - The user is not saved")
-    })
     @PostMapping("/api/createUser")
      public ResponseEntity<String> create(@RequestBody UserV2 userV2) throws ParseException {
         String user = null;
@@ -38,11 +29,6 @@ public class UserControllerV2 {
             return ResponseEntity.status(HttpStatus.GONE).build();
         }
     }
-    @ApiOperation(value = "Get all the users", notes = "Return users")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Retrieved Successfully"),
-            @ApiResponse(code = 404, message = "Not found - The users are not found")
-    })
     @PostMapping(value = "/getUsers" , produces = "application/vnd.company.app-v2+json")
     public ResponseEntity<List<UserV2>> getAll(@RequestBody UserRequest userRequest){
         List<UserV2> users = this.userServiceV2.getUsersV2(userRequest);
@@ -52,12 +38,7 @@ public class UserControllerV2 {
         }
         return ResponseEntity.of(Optional.of(users));
     }
-
-    @ApiOperation(value = "Get User by passing an Id", notes = "Return user as per the id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved"),
-            @ApiResponse(code = 404, message = "Not found - The user is not found")
-    })
+    
     @GetMapping(value = "/getById", params = "version=2")
     public ResponseEntity<UserV2> getById(@RequestParam int id)
     {

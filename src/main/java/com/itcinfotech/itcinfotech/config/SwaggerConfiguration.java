@@ -1,31 +1,37 @@
 package com.itcinfotech.itcinfotech.config;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-
-import java.util.Collections;
-
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class SwaggerConfiguration {
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build();
+@OpenAPIDefinition
+public class SwaggerConfiguration implements WebMvcConfigurer {
+
+    @Value("${swagger.project-description: retrieve Workflow}")
+    private String projectDescription;
+
+    @Value("${swagger.support-email: seabed2.com}")
+    private String supportEmail;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/swagger-ui.html**")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
-    private ApiInfo apiInfo() {
-        return new ApiInfo("Spring boot Application for User Crud Operation","This is an intermediate project","1.0","Terms of Service",
-                new Contact("venkatesh Kasaram","itcinfo.com","vhkasaram@gmail.com"),"License of APIS",
-                "API license URL", Collections.emptyList());
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI().info(new Info().title("CURD OPERATIONS")
+                .version("1.0")
+                .description(projectDescription)
+                .contact(new io.swagger.v3.oas.models.info.Contact().name("JVD TEAM").email(supportEmail)));
     }
 }
